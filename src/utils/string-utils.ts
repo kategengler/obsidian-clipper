@@ -138,6 +138,11 @@ export function processUrls(htmlContent: string, baseUrl: URL): string {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(htmlContent, 'text/html');
 	
+	// Check if body is available
+	if (!doc.body) {
+		return htmlContent;
+	}
+	
 	// Handle relative URLs for both images and links
 	doc.querySelectorAll('img').forEach(img => makeUrlAbsolute(img, 'srcset', baseUrl));
 	doc.querySelectorAll('img').forEach(img => makeUrlAbsolute(img, 'src', baseUrl));

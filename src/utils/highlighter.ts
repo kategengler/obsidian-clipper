@@ -640,6 +640,11 @@ function sanitizeAndPreserveFormatting(html: string): string {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(html, 'text/html');
 	
+	// Check if body is available
+	if (!doc.body) {
+		return html;
+	}
+	
 	// Remove any script tags
 	doc.querySelectorAll('script').forEach(el => el.remove());
 

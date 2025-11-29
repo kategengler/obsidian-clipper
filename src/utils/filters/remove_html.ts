@@ -24,6 +24,12 @@ export const remove_html = (html: string, params: string = ''): string => {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(html, 'text/html');
 
+	// Check if body is available
+	if (!doc.body) {
+		debugLog('RemoveHTML', 'Unable to parse HTML, returning original');
+		return html;
+	}
+
 	elementsToRemove.forEach(elem => {
 		let elements: NodeListOf<Element> | HTMLCollectionOf<Element>;
 		if (elem.startsWith('.')) {

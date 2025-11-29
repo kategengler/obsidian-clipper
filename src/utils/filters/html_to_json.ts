@@ -40,6 +40,12 @@ export const html_to_json = (input: string): string => {
 	try {
 		const parser = new DOMParser();
 		const doc = parser.parseFromString(input, 'text/html');
+		
+		// Check if body is available
+		if (!doc.body) {
+			return input;
+		}
+		
 		const bodyChildren = Array.from(doc.body.childNodes)
 			.map(parseNode)
 			.filter(child => child !== null);

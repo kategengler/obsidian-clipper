@@ -11,9 +11,11 @@ export function createElementWithHTML(tagName: string, htmlContent: string, attr
 	const doc = parser.parseFromString(htmlContent, 'text/html');
 	
 	// Move all child nodes from parsed content to the element
-	Array.from(doc.body.childNodes).forEach(node => {
-		element.appendChild(node.cloneNode(true));
-	});
+	if (doc.body) {
+		Array.from(doc.body.childNodes).forEach(node => {
+			element.appendChild(node.cloneNode(true));
+		});
+	}
 	
 	Object.entries(attributes).forEach(([key, value]) => element.setAttribute(key, value));
 	return element;
