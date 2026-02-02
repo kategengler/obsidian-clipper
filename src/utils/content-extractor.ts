@@ -35,7 +35,7 @@ function canHighlightElement(element: Element): boolean {
 function stripHtml(html: string): string {
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(html, 'text/html');
-	return doc.body.textContent || '';
+	return doc.body?.textContent || '';
 }
 
 interface ContentResponse {
@@ -274,6 +274,11 @@ function processHighlights(content: string, highlights: AnyHighlightData[]): str
 		const doc = parser.parseFromString(content, 'text/html');
 		const tempDiv = doc.body;
 
+		// Check if body is available
+		if (!tempDiv) {
+			return content;
+		}
+
 		const textHighlights = filterAndSortHighlights(highlights);
 		debugLog('Highlights', 'Processing highlights:', textHighlights.length);
 
@@ -360,6 +365,11 @@ function processContentBasedHighlight(highlight: TextHighlightData | ElementHigh
 	const parser = new DOMParser();
 	const doc = parser.parseFromString(highlight.content, 'text/html');
 	const contentDiv = doc.body;
+
+	// Check if body is available
+	if (!contentDiv) {
+		return;
+	}
 
 	// Serialize the inner content
 	const serializer = new XMLSerializer();
